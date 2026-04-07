@@ -697,10 +697,307 @@ At the receiver, the packets are reassembled to form the original message.
       codeExample: ``
     },
     {
-      id: 1,
-      question: "1. ",
+      id: 8888,
+      question: "Mid Paper.",
       answer: "",
-      codeExample: ``
+      codeExample: `
+=========================================
+DATA COMMUNICATION & NETWORKING
+(EASY + DETAILED ANSWERS)
+=========================================
+
+
+-----------------------------------------
+Q1 (a) (i)
+Define Port and write port number of FTP
+-----------------------------------------
+
+Answer:
+A port is a number used to identify a specific
+service or application running on a computer.
+
+Just like a house has different rooms,
+a computer has different ports for different services.
+
+Example:
+HTTP → Port 80
+FTP → Port 21
+
+So,
+FTP Port Number = 21
+
+
+-----------------------------------------
+Q1 (a) (ii)
+What is HTTP?
+-----------------------------------------
+
+Answer:
+HTTP (HyperText Transfer Protocol) is a protocol
+used to load web pages on the internet.
+
+When you open a website in browser,
+HTTP helps send request and receive data.
+
+Example:
+When you open Google, HTTP is used.
+
+
+-----------------------------------------
+Q1 (a) (iii)
+Define Flow Control
+-----------------------------------------
+
+Answer:
+Flow control is used to control the speed of
+data transmission between sender and receiver.
+
+If sender sends data too fast,
+receiver may get overloaded.
+
+So flow control keeps balance.
+
+
+-----------------------------------------
+Q1 (b) MCQ Explanation
+-----------------------------------------
+
+1. Application Layer:
+Because it directly interacts with user.
+
+2. TCP is reliable:
+Because it checks errors and ensures delivery.
+
+3. Presentation Layer:
+Handles encryption and compression.
+
+4. Flow control prevents:
+Network overload.
+
+5. Congestion control:
+Prevents network overload.
+
+6. HTTP:
+Used to open web pages.
+
+7. Full Duplex:
+Data flows both directions at same time.
+
+
+-----------------------------------------
+Q2 (a) (i)
+Circuit Switching vs Packet Switching
+-----------------------------------------
+
+Circuit Switching:
+
+- A fixed path is created before communication
+- Data flows continuously
+- Example: Telephone call
+
+Packet Switching:
+
+- Data is divided into small packets
+- Each packet travels separately
+- Example: Internet
+
+Easy idea:
+Circuit = One fixed road
+Packet = Many different roads
+
+
+-----------------------------------------
+Q2 (a) (ii)
+TCP Three-Way Handshake
+-----------------------------------------
+
+Answer:
+
+This is a process to establish connection
+between client and server.
+
+Steps:
+
+1. SYN:
+Client says → "Can I connect?"
+
+2. SYN-ACK:
+Server replies → "Yes, I am ready"
+
+3. ACK:
+Client says → "OK, let's start"
+
+Now connection is established.
+
+
+-----------------------------------------
+Q2 (b) (i)
+Multiplexing with types
+-----------------------------------------
+
+Answer:
+
+Multiplexing means combining many signals
+into one channel to save bandwidth.
+
+Types:
+
+1. FDM:
+Different frequencies used
+
+2. TDM:
+Different time slots used
+
+3. WDM:
+Used in optical fiber
+
+
+-----------------------------------------
+Q2 (b) (ii)
+Packet Switching (Easy Explanation)
+-----------------------------------------
+
+Answer:
+
+In packet switching:
+
+- Data is broken into small packets
+- Each packet travels separately
+- At destination, packets are combined
+
+Advantage:
+Fast and efficient
+
+Example:
+Sending WhatsApp messages
+
+
+-----------------------------------------
+Q3 (i)
+Which is better? (Circuit vs Packet)
+-----------------------------------------
+
+Answer:
+
+Packet Switching is better because:
+
+1. Uses bandwidth efficiently
+2. No need of fixed path
+3. Can handle many users
+4. More reliable
+
+So modern internet uses packet switching.
+
+
+-----------------------------------------
+Q3 (ii)
+FTP works but HTTP not working
+-----------------------------------------
+
+Answer:
+
+Possible reasons:
+
+1. Port 80 blocked
+2. Website server down
+3. DNS problem
+4. Firewall blocking HTTP
+5. Browser issue
+
+Meaning:
+File transfer works but web access fails.
+
+
+-----------------------------------------
+Q3 (iii)
+HTTP vs FTP (Large Files)
+-----------------------------------------
+
+Answer:
+
+HTTP:
+- Used for web browsing
+- Not good for large files
+
+FTP:
+- Designed for file transfer
+- Supports large files easily
+
+Conclusion:
+FTP is better for large files.
+
+
+
+-----------------------------------------
+Q4 (a)
+Congestion Control in Streaming
+-----------------------------------------
+
+Answer:
+
+When many users use internet,
+network becomes slow → buffering happens.
+
+Congestion control helps by:
+
+1. Reducing data speed
+2. Avoiding packet loss
+3. Managing traffic
+
+Result:
+Video runs smoothly.
+
+
+
+-----------------------------------------
+Q4 (b)
+Role of DNS and failure
+-----------------------------------------
+
+Answer:
+
+DNS converts website name into IP address.
+
+Example:
+google.com → IP address
+
+Role:
+Helps us access websites easily.
+
+If DNS fails:
+
+1. Website will not open
+2. Internet feels slow
+3. Error messages appear
+
+
+-----------------------------------------
+
+
+OR
+
+-----------------------------------------
+
+Application Layer Protocols
+-----------------------------------------
+
+Answer:
+
+Application layer provides services to users.
+
+Examples:
+
+HTTP → Web browsing  
+FTP → File transfer  
+SMTP → Email  
+
+Importance:
+
+1. Helps communication
+2. Used by users directly
+3. Enables internet services
+      
+      `
     },
     {
       id: 1,
