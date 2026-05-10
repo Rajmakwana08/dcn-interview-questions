@@ -1006,6 +1006,679 @@ Importance:
       codeExample: ``
     },
     {
+      id: 1.1,
+      question: "1. Character Count Method",
+      answer: "",
+      codeExample: `
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char data[100];
+    int length;
+
+    // Accept the data from the user
+    printf("Enter the data: ");
+    scanf("%s", data);
+
+    // Calculate the length of the data
+    length = strlen(data);
+
+    // Display the frame using character count
+    printf("Frame to be transmitted:\n");
+
+    // First element is the count
+    printf("%d ", length);
+
+    // Display the characters
+    for(int i = 0; i < length; i++)
+    {
+        printf("%c ", data[i]);
+    }
+
+    printf("\n");
+
+    return 0;
+}
+
+
+
+
+Output
+Enter the data: HELLO
+Frame to be transmitted:
+5 H E L L O
+
+      `
+    },
+    {
+      id: 2.2,
+      question: "2. TCP Client – Server Communication",
+      answer: "",
+      codeExample: `
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+int main()
+{
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    char buffer[1024] = {0};
+    char message[] = "Hello from Server";
+
+    // Create socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // Define address
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(8080);
+
+    // Bind socket
+    bind(server_fd, (struct sockaddr *)&address, sizeof(address));
+
+    // Listen for connections
+    listen(server_fd, 3);
+
+    printf("Server waiting for connection...\n");
+
+    // Accept connection
+    new_socket = accept(server_fd, NULL, NULL);
+
+    // Read message from client
+    read(new_socket, buffer, 1024);
+    printf("Message from client: %s\n", buffer);
+
+    // Send reply
+    send(new_socket, message, strlen(message), 0);
+
+    close(new_socket);
+    close(server_fd);
+
+    return 0;
+}
+
+TCP Client Code
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+int main()
+{
+    int sock;
+    struct sockaddr_in serv_addr;
+    char message[] = "Hello Server";
+    char buffer[1024] = {0};
+
+    // Create socket
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(8080);
+
+    // Convert IP address
+    inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
+
+    // Connect to server
+    connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+    // Send message
+    send(sock, message, strlen(message), 0);
+
+    // Receive reply
+    read(sock, buffer, 1024);
+
+    printf("Message from server: %s\n", buffer);
+
+    close(sock);
+
+    return 0;
+}
+
+
+
+Output
+Server Side
+Server waiting for connection...
+Message from client: Hello Server
+Client Side
+Message from server: Hello from Server
+
+      `
+    },
+    {
+      id: 3.3,
+      question: "3. UDP Client – Server Communication",
+      answer: "",
+      codeExample: `
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+int main()
+{
+    int sockfd;
+    struct sockaddr_in server, client;
+    char buffer[1024];
+    socklen_t len;
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons(8080);
+
+    bind(sockfd, (struct sockaddr *)&server, sizeof(server));
+
+    printf("UDP Server waiting...\n");
+
+    len = sizeof(client);
+
+    recvfrom(sockfd, buffer, 1024, 0, (struct sockaddr *)&client, &len);
+
+    printf("Message from client: %s\n", buffer);
+
+    char reply[] = "Hello from UDP Server";
+
+    sendto(sockfd, reply, strlen(reply), 0, (struct sockaddr *)&client, len);
+
+    return 0;
+}
+
+UDP Client Code
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+int main()
+{
+    int sockfd;
+    struct sockaddr_in server;
+    char message[] = "Hello UDP Server";
+    char buffer[1024];
+    socklen_t len;
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    server.sin_family = AF_INET;
+    server.sin_port = htons(8080);
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+    sendto(sockfd, message, strlen(message), 0, (struct sockaddr *)&server, sizeof(server));
+
+    len = sizeof(server);
+
+    recvfrom(sockfd, buffer, 1024, 0, (struct sockaddr *)&server, &len);
+
+    printf("Reply from server: %s\n", buffer);
+
+    return 0;
+}
+
+
+
+Output
+Reply from server: Hello from UDP Server
+
+      
+      `
+    },
+    {
+      id: 4.4,
+      question: "4. File Sharing using TCP",
+      answer: "",
+      codeExample: `
+#include <stdio.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+int main()
+{
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    FILE *fp;
+    char data[1024];
+
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(8080);
+
+    bind(server_fd, (struct sockaddr *)&address, sizeof(address));
+
+    listen(server_fd, 3);
+
+    printf("Server waiting...\n");
+
+    new_socket = accept(server_fd, NULL, NULL);
+
+    fp = fopen("file.txt", "r");
+
+    while(fgets(data, sizeof(data), fp))
+    {
+        send(new_socket, data, sizeof(data), 0);
+    }
+
+    fclose(fp);
+    close(new_socket);
+
+    return 0;
+}
+
+Client Code
+#include <stdio.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+int main()
+{
+    int sock;
+    struct sockaddr_in serv_addr;
+    char buffer[1024];
+    FILE *fp;
+
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(8080);
+    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+    connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+    fp = fopen("received.txt", "w");
+
+    while(read(sock, buffer, sizeof(buffer)) > 0)
+    {
+        fprintf(fp, "%s", buffer);
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+
+
+Output
+Server waiting...
+File transferred successfully
+Client receives received.txt file.
+
+      `
+    },
+    {
+      id: 5.5,
+      question: "5. Bit Stuffing",
+      answer: "",
+      codeExample: `
+#include <stdio.h>
+
+int main()
+{
+    int data[100], stuffed[200];
+    int n, i, j = 0, count = 0;
+
+    printf("Enter number of bits: ");
+    scanf("%d", &n);
+
+    printf("Enter bits:\n");
+
+    for(i = 0; i < n; i++)
+    scanf("%d", &data[i]);
+
+    for(i = 0; i < n; i++)
+    {
+        stuffed[j] = data[i];
+        j++;
+
+        if(data[i] == 1)
+        count++;
+        else
+        count = 0;
+
+        if(count == 5)
+        {
+            stuffed[j] = 0;
+            j++;
+            count = 0;
+        }
+    }
+
+    printf("Stuffed data:\n");
+
+    for(i = 0; i < j; i++)
+    printf("%d", stuffed[i]);
+
+    return 0;
+}
+
+
+
+Output
+
+Enter number of bits: 6
+Enter bits:
+1 1 1 1 1 0
+
+Stuffed data:
+1111100
+
+      
+      `
+    },
+    {
+      id: 6.6,
+      question: "6. Byte Stuffing",
+      answer: "",
+      codeExample: `
+#include <stdio.h>
+
+int main()
+{
+    char data[100];
+    int i;
+
+    printf("Enter the data string: ");
+    scanf("%s", data);
+
+    printf("Stuffed data:\n");
+
+    printf("F "); // Frame start
+
+    for(i = 0; data[i] != '\0'; i++)
+    {
+        if(data[i] == 'F' || data[i] == 'E')
+        printf("E ");   // Escape character
+
+        printf("%c ", data[i]);
+    }
+
+    printf(" F"); // Frame end
+
+    return 0;
+}
+
+
+
+Output
+Enter the data string: HELLO
+
+Stuffed data:
+F H E L L O F
+
+      
+      `
+    },
+    {
+      id: 7.7,
+      question: "7. Leaky Bucket Algorithm",
+      answer: "",
+      codeExample: `
+def leaky_bucket(packets, bucket_size, output_rate):
+ bucket = 0
+ for i in range(len(packets)):
+  print(f"\nPacket {i+1}: {packets[i]}")
+  if bucket + packets[i] > bucket_size:
+    print("Bucket Overflow! Packet Dropped")
+  else:
+    bucket += packets[i]
+    print("Packet added. Bucket size:", bucket)
+  bucket -= output_rate
+  if bucket < 0:
+    bucket = 0
+  print("After transmission, bucket size:", bucket)
+
+      
+# Example
+packets = [4, 2, 6, 3, 5]
+leaky_bucket(packets, bucket_size=10, output_rate=3)
+
+
+
+Sample Output
+
+Packet 1: 4
+Packet added. Bucket size: 4
+After transmission, bucket size: 1
+      `
+    },
+    {
+      id: 8.8,
+      question: "8. Token Bucket Algorithm",
+      answer: "",
+      codeExample: `
+def token_bucket(packets, bucket_size, token_rate):
+
+    tokens = bucket_size
+
+    for i in range(len(packets)):
+
+        tokens = min(bucket_size, tokens + token_rate)
+
+        print(f"\nPacket {i+1}: {packets[i]}")
+        print("Available tokens:", tokens)
+
+        if tokens >= packets[i]:
+            tokens -= packets[i]
+            print("Packet transmitted")
+
+        else:
+            print("Packet dropped (not enough tokens)")
+
+
+# Example
+packets = [4, 2, 6, 3, 5]
+
+token_bucket(packets, bucket_size=10, token_rate=3)
+      `
+    },
+    {
+      id: 9.9,
+      question: "9. Longitudinal Redundancy Check (LRC)",
+      answer: "",
+      codeExample: `
+def lrc(data):
+
+    result = data[0]
+
+    for i in range(1, len(data)):
+
+        temp = ""
+
+        for j in range(len(data[i])):
+
+            if result[j] == data[i][j]:
+                temp += '0'
+
+            else:
+                temp += '1'
+
+        result = temp
+
+    return result
+
+
+# Example
+data = ["1101", "1011", "1001"]
+
+print("LRC:", lrc(data))
+      
+      `
+    },
+    {
+      id: 10.10,
+      question: "10. Cyclic Redundancy Check (CRC)",
+      answer: "",
+      codeExample: `
+def xor(a, b):
+
+    result = ""
+
+    for i in range(1, len(b)):
+
+        if a[i] == b[i]:
+            result += "0"
+
+        else:
+            result += "1"
+
+    return result
+
+
+def mod2div(dividend, divisor):
+
+    pick = len(divisor)
+
+    tmp = dividend[0:pick]
+
+    while pick < len(dividend):
+
+        if tmp[0] == '1':
+            tmp = xor(divisor, tmp) + dividend[pick]
+
+        else:
+            tmp = xor('0' * pick, tmp) + dividend[pick]
+
+        pick += 1
+
+    if tmp[0] == '1':
+        tmp = xor(divisor, tmp)
+
+    else:
+        tmp = xor('0' * pick, tmp)
+
+    return tmp
+
+
+def encode(data, key):
+
+    appended = data + '0' * (len(key) - 1)
+
+    remainder = mod2div(appended, key)
+
+    return data + remainder
+
+
+def check(data, key):
+
+    remainder = mod2div(data, key)
+
+    return remainder
+
+
+# Example
+data = "1101"
+key = "1011"
+
+codeword = encode(data, key)
+
+print("Transmitted:", codeword)
+
+if check(codeword, key) == "0" * (len(key) - 1):
+    print("No error")
+
+else:
+    print("Error detected")
+      `
+    },
+    {
+      id: 11.11,
+      question: "11. Vertical Redundancy Check (VRC)",
+      answer: "",
+      codeExample: `
+def vrc(data):
+
+    count = data.count('1')
+
+    if count % 2 == 0:
+        return data + '0'
+
+    else:
+        return data + '1'
+
+
+# Example
+data = "1101"
+
+print("VRC:", vrc(data))
+      `
+    },
+    {
+      id: 12.12,
+      question: "12. Hamming Code",
+      answer: "",
+      codeExample: `
+def hamming_encode(data):
+
+    m = len(data)
+
+    r = 0
+
+    while (2 ** r < m + r + 1):
+        r += 1
+
+    res = ['0'] * (m + r)
+
+    j = 0
+
+    for i in range(1, len(res) + 1):
+
+        if i & (i - 1) != 0:
+            res[i - 1] = data[j]
+            j += 1
+
+    for i in range(r):
+
+        pos = 2 ** i
+
+        val = 0
+
+        for j in range(1, len(res) + 1):
+
+            if j & pos:
+                val ^= int(res[j - 1])
+
+        res[pos - 1] = str(val)
+
+    return ''.join(res)
+
+
+# Example
+data = "1011"
+
+print("Hamming Code:", hamming_encode(data))
+      `
+    },
+    {
+      id: 1,
+      question: "1. ",
+      answer: "",
+      codeExample: ``
+    },
+    {
+      id: 1,
+      question: "1. ",
+      answer: "",
+      codeExample: ``
+    },
+    {
+      id: 1,
+      question: "1. ",
+      answer: "",
+      codeExample: ``
+    },
+    {
       id: 1,
       question: "1. ",
       answer: "",
